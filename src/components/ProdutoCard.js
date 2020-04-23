@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CardContainer = styled.div`
-box-sizing: border-box;
 border: 1px solid black;
 display: flex;
 flex-direction: column;
