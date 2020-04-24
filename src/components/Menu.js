@@ -14,6 +14,11 @@ export class MenuLateral extends React.Component {
                   <input onChange={this.props.onChangeInputValorMax} type="number" value={this.props.InputMax}></input>
               </div>
 
+              <div className="valor-minimo">
+                  <label>Valor Mínimo:</label><br/>
+                  <input onChange={this.props.onChangeInputValorMin} type="number" value={this.props.InputMin}></input>
+              </div>
+
               <div className="buscar-produto">
                   <label>Buscar Produto:</label><br/>
                   <input type="text" name="buscar" value=""></input>

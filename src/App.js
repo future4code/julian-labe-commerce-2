@@ -111,15 +111,18 @@ class App extends React.Component {
   }
 
     onChangeValorMinimo = (event) => {
-      console.log("Entrou no onChange Valor Minimo")
+      this.setState({
+        InputValorMinimo: event.target.value
+      })
+      
+      
     }
 
     onChangeValorMaximo = (event) => {
       this.setState({
         InputValorMaximo: event.target.value
       })
-      console.log(this.state.InputValorMaximo)
-      console.log("Entrou no onChange Valor Maximo")
+      
     }
 
     onChangeFiltroPreco = (event) => {
@@ -136,14 +139,37 @@ class App extends React.Component {
   render() {
 
     const listaProdutos = this.state.arrayProdutos
-    console.log(this.state.InputValorMaximo)
+    
+    const listaFiltradaMin = listaProdutos.filter(prod => {
+      if (this.state.InputValorMinimo !== '') {
+        return prod.value >= this.state.InputValorMinimo
+      } else {
+        return true
+      }
+    })
+    
+    const listaFiltradaMax = listaProdutos.filter(prod => {
+      if (this.state.InputValorMaximo !== '') {
+        return prod.value <= this.state.InputValorMaximo
+      } else {
+        return true
+      }
+    })
 
     
+    let listaFiltrada = listaFiltradaMax.filter(x => listaFiltradaMin.includes(x)); 
 
     return (
+      
       <Container>
+        {console.log("Valor máximo: ", this.state.InputValorMaximo)}
+        {console.log("Valor mínimo: ", this.state.InputValorMinimo)}
         <MenuContainer>
-          <MenuLateral onChangeInputValorMax={this.onChangeValorMaximo} InputMax={this.state.InputValorMaximo}/>
+          <MenuLateral 
+          onChangeInputValorMax={this.onChangeValorMaximo} 
+          InputMax={this.state.InputValorMaximo}
+          onChangeInputValorMin={this.onChangeValorMinimo}
+          InputMin={this.state.InputValorMin}/>
         </MenuContainer>
 
         <MainContainer>
@@ -156,13 +182,12 @@ class App extends React.Component {
           </FiltroPreco>
 
           <ProdutoContainer>
-          {listaProdutos.map(prod => {
+          {listaFiltrada.map(prod => {
             return (
               <ProdutoCard
                 Url={prod.imageUrl}
                 Nome={prod.name}
                 Preco={prod.value}
-
               >
               </ProdutoCard>
             )
