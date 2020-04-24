@@ -106,8 +106,8 @@ class App extends React.Component {
       }
     ],
     filtroPrecos:'',
-    InputValorMaximo: 999999,
-    InputValorMinimo: 0,
+    InputValorMaximo: '',
+    InputValorMinimo: '',
   }
 
     onChangeValorMinimo = (event) => {
@@ -118,7 +118,7 @@ class App extends React.Component {
       this.setState({
         InputValorMaximo: event.target.value
       })
-      console.log(this.InputValorMaximo)
+      console.log(this.state.InputValorMaximo)
       console.log("Entrou no onChange Valor Maximo")
     }
 
@@ -136,7 +136,10 @@ class App extends React.Component {
   render() {
 
     const listaProdutos = this.state.arrayProdutos
+    console.log(this.state.InputValorMaximo)
+
     
+
     return (
       <Container>
         <MenuContainer>

@@ -11,11 +11,6 @@ export class MenuLateral extends React.Component {
 
               <div className="valor-maximo">
                   <label>Valor Máximo:</label><br/>
-                  <NumericInput onChange={this.props.onChangeInputValorMax} type="number" min="0" name="valorMin" value={this.props.InputMax}></NumericInput>
-              </div>
-
-              <div>
-                  <label>Teste:</label><br/>
                   <input onChange={this.props.onChangeInputValorMax} type="number" value={this.props.InputMax}></input>
               </div>
 
