@@ -19,12 +19,6 @@ border-style: none;
 
 
 export class ProdutoCard extends React.Component {
-    /*state = {
-        id: this.props.id,
-        name: this.props.name,
-        value: this.props.value,
-        imageUrl: this.props.imageUrl
-    }*/
     
   render() {
     return (

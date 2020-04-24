@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { MenuLateral } from "./components/Menu";
 import { ProdutoCard } from "./components/ProdutoCard";
+import { Carrinho } from "./components/Carrinho";
 
 import styled from 'styled-components'
 
@@ -105,9 +106,10 @@ class App extends React.Component {
         imageUrl: "https://picsum.photos/208/200",
       }
     ],
-    filtroPrecos:'',
+    ordemPrecos:'crescente',
     InputValorMaximo: '',
     InputValorMinimo: '',
+    InputBuscar: '',
   }
 
     onChangeValorMinimo = (event) => {
@@ -125,11 +127,16 @@ class App extends React.Component {
       
     }
 
-    onChangeFiltroPreco = (event) => {
+    onChangeBuscar = (event) => {
       this.setState({
-        InputValorMaximo: event.target.value
-      });
-      console.log("Entrou no onChange Filtro preco")
+        InputBuscar: event.target.value
+      })
+    }
+
+    onChangeOrdemPreco = (event) => {
+      this.setState({
+        ordemPrecos: event.target.value
+      })
     }
 
     componentDidUpdate() {
@@ -156,33 +163,54 @@ class App extends React.Component {
       }
     })
 
+    let listaFiltradaPreco = listaFiltradaMax.filter(x => listaFiltradaMin.includes(x));
     
-    let listaFiltrada = listaFiltradaMax.filter(x => listaFiltradaMin.includes(x)); 
+    const listaBusca = listaProdutos.filter(prod => {
+      if (this.state.InputBuscar !== '') {
+        return prod.name === this.state.InputBuscar
+      } else {
+        return true
+      }
+    })
+
+    let listaFiltrada = listaBusca.filter(x => listaFiltradaPreco.includes(x));
+
+    let listaOrdenada = listaFiltrada
+
+    if (this.state.ordemPrecos == 'crescente') {
+      listaOrdenada = listaOrdenada.sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
+    } else {
+      listaOrdenada = listaOrdenada.sort((a, b) => parseFloat(b.value) - parseFloat(a.value));
+    }
 
     return (
       
       <Container>
         {console.log("Valor máximo: ", this.state.InputValorMaximo)}
         {console.log("Valor mínimo: ", this.state.InputValorMinimo)}
+        {console.log("Buscar produto: ", this.state.InputBuscar)}
+        {console.log(this.state.ordemPrecos)}
         <MenuContainer>
           <MenuLateral 
           onChangeInputValorMax={this.onChangeValorMaximo} 
           InputMax={this.state.InputValorMaximo}
           onChangeInputValorMin={this.onChangeValorMinimo}
-          InputMin={this.state.InputValorMin}/>
+          InputMin={this.state.InputValorMin}
+          onChangeInputBuscar={this.onChangeBuscar}
+          Buscar={this.state.InputBuscar}/>
         </MenuContainer>
 
         <MainContainer>
           <FiltroPreco >
             <h3>Quantidade de produtos: {this.state.arrayProdutos.length}</h3>
-            <SelecFiltroPreco onChange={this.onChangeFiltroPreco} >
+            <SelecFiltroPreco value={this.state.ordemPrecos} onChange={this.onChangeOrdemPreco} >
               <option value="crescente">Preço: crescente</option>
               <option value="decrescente">Preço: decrescente</option>
             </SelecFiltroPreco>
           </FiltroPreco>
 
           <ProdutoContainer>
-          {listaFiltrada.map(prod => {
+          {listaOrdenada.map(prod => {
             return (
               <ProdutoCard
                 Url={prod.imageUrl}
@@ -193,6 +221,8 @@ class App extends React.Component {
             )
           })}
           </ProdutoContainer>
+
+          <Carrinho />
         </MainContainer>
       </Container>
     );

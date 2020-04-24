@@ -21,7 +21,7 @@ export class MenuLateral extends React.Component {
 
               <div className="buscar-produto">
                   <label>Buscar Produto:</label><br/>
-                  <input type="text" name="buscar" value=""></input>
+                  <input onChange={this.props.onChangeInputBuscar} type="text" value={this.props.Buscar}></input>
               </div>
 
         </div>
