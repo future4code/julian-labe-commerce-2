@@ -19,14 +19,13 @@ border-style: none;
 
 
 export class ProdutoCard extends React.Component {
-    
   render() {
     return (
       <CardContainer>
         <img src={this.props.Url} />
         <p>Nome: {this.props.Nome}</p>
         <p>Preço: R${this.props.Preco}</p>
-        <BotaoAdicionar>Adicionar ao carrinho</BotaoAdicionar>
+        <BotaoAdicionar onClick={this.props.Adicionar} value={this.props.Id}>Adicionar ao carrinho</BotaoAdicionar>
       </CardContainer>
     );
   }  

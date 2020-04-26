@@ -51,7 +51,11 @@ const ProdutoContainer = styled.div`
  width: 75vw;
  margin-top: 2vw;
 `
-
+const BotaoCarrinho = styled.button`
+  margin-top: 20px;
+  width: 345px;
+  height: 40px;
+`
 
 
 class App extends React.Component {
@@ -110,6 +114,8 @@ class App extends React.Component {
     InputValorMaximo: '',
     InputValorMinimo: '',
     InputBuscar: '',
+    mostraCarrinho: false,
+    arrayCarrinho: []
   }
 
     onChangeValorMinimo = (event) => {
@@ -139,8 +145,50 @@ class App extends React.Component {
       })
     }
 
+    onClickCarrinho = () => {
+      if (this.state.mostraCarrinho) {
+        this.setState({mostraCarrinho: false})
+      } else {
+        this.setState({mostraCarrinho: true})
+      }
+    }
+
+    onClickAdicionar = (event) => {
+      // console.log(event.target.value)
+      const ID = Number(event.target.value)
+      // console.log(ID)
+      const produtos = this.state.arrayProdutos
+      // console.log(produtos)
+      const novoItem = produtos.filter(prod => {
+        if (prod.id === ID) {
+          return prod
+        }
+      })
+      // console.log("novoItem", novoItem)
+      const listaCarrinho = this.state.arrayCarrinho
+      // console.log("listaCarrinho", listaCarrinho)
+      const listaCarrinhoAtualizada = [...listaCarrinho, ...novoItem]
+      // console.log("listaCarrinho + novoItem", listaCarrinhoAtualizada)
+      this.setState({arrayCarrinho: listaCarrinhoAtualizada})
+    }
+
+    onClickRemover = (event) => {
+      //console.log(event.target.value)
+      const ID = Number(event.target.value)
+      //console.log(this.listaCarrinho)
+      const carrinhoAntes = this.state.arrayCarrinho
+      const carrinhoDepois = carrinhoAntes.filter(prod => {
+        if (prod.id !== ID) {
+              
+          return prod
+              
+        }
+      })
+      this.setState({arrayCarrinho: carrinhoDepois})
+    }
+
     componentDidUpdate() {
-      console.log("O did update foi executado")
+      // console.log("O did update foi executado")
     };
 
   render() {
@@ -186,10 +234,10 @@ class App extends React.Component {
     return (
       
       <Container>
-        {console.log("Valor máximo: ", this.state.InputValorMaximo)}
+        {/* {console.log("Valor máximo: ", this.state.InputValorMaximo)}
         {console.log("Valor mínimo: ", this.state.InputValorMinimo)}
         {console.log("Buscar produto: ", this.state.InputBuscar)}
-        {console.log(this.state.ordemPrecos)}
+        {console.log(this.state.ordemPrecos)} */}
         <MenuContainer>
           <MenuLateral 
           onChangeInputValorMax={this.onChangeValorMaximo} 
@@ -213,16 +261,19 @@ class App extends React.Component {
           {listaOrdenada.map(prod => {
             return (
               <ProdutoCard
+                Id={prod.id}
                 Url={prod.imageUrl}
                 Nome={prod.name}
                 Preco={prod.value}
+                Adicionar={this.onClickAdicionar}
               >
               </ProdutoCard>
             )
           })}
           </ProdutoContainer>
 
-          <Carrinho />
+          <BotaoCarrinho onClick={this.onClickCarrinho}>{this.state.mostraCarrinho ? "Esconder carrinho" : "Mostrar carrinho"}</BotaoCarrinho>
+          {this.state.mostraCarrinho ? <Carrinho Produtos={this.state.arrayCarrinho} Remover={this.onClickRemover}/> : <div></div>}
         </MainContainer>
       </Container>
     );
